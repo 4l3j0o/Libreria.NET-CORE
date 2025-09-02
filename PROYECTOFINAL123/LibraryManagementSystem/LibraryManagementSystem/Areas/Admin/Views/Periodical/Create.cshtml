@@ -1,0 +1,125 @@
+﻿@using Library.Models;
+@using Library.ViewModels;
+@model Library.ViewModels.PeriodicalViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+
+<style>
+    .placeholder-option {
+        color: #6c757d;
+    }
+</style>
+
+<h1>Agregar nueva publicación periódica</h1>
+
+<hr />
+<div class="container mt-3">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label asp-for="ItemCode" class="control-label"></label>
+                <input asp-for="ItemCode" class="form-control" readonly />
+                <span asp-validation-for="ItemCode" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="LanguageId" class="control-label required">Idioma<span class="text-danger">
+                        *</span></label>
+                <select asp-for="LanguageId"
+                    asp-items="@(new SelectList(Model.Languages, nameof(LanguageViewModel.Id), nameof(LanguageViewModel.Name)))"
+                    class="form-control">
+                    <option value="" disabled selected class="placeholder-option">-- Selecciona idioma --</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Title" class="control-label required">Título<span class="text-danger"> *</span></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="CategoryId" class="control-label required">Categoría del ítem<span class="text-danger">
+                        *</span></label>
+                <select asp-for="CategoryId"
+                    asp-items="@(new SelectList(Model.Categories.Where(c => c.ItemType == ItemType.Periodical), nameof(CategoryViewModel.Id), nameof(CategoryViewModel.Name)))"
+                    class="form-control">
+                    <option value="" disabled selected class="placeholder-option">-- Selecciona categoría --</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="ISSN" class="control-label required">ISSN<span class="text-danger"> *</span></label>
+                <input asp-for="ISSN" class="form-control" placeholder="ej.,####-#### " />
+                <span asp-validation-for="ISSN" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="PublisherId" class="control-label">Editorial</label>
+                <select asp-for="PublisherId"
+                    asp-items="@(new SelectList(Model.Publishers, nameof(PublisherViewModel.Id), nameof(PublisherViewModel.Name)))"
+                    class="form-control">
+                    <option value="" disabled selected class="placeholder-option">-- Selecciona editorial --</option>
+                </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Description" class="control-label">Descripción</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="PublishedYear" class="control-label">Año de publicación</label>
+                <select asp-for="PublishedYear" class="form-control">
+                    <option value="" disabled selected class="placeholder-option">-- Selecciona año de publicación --
+                    </option>
+                    @for (var y = DateTime.UtcNow.Year; y >= 1900; y--)
+                    {
+                        <option value="@y" selected="@(Model.PublishedYear == y)">
+                            @y
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Frequency" class="control-label">Frecuencia<span class="text-danger"> *</span></label>
+                <select asp-for="Frequency" asp-items="Model.FrequencyList" class="form-control">
+                    <option value="">-- Selecciona frecuencia --</option>
+                </select>
+                <span asp-validation-for="Frequency" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Theme" class="control-label">Tema<span class="text-danger"> *</span></label>
+                <input asp-for="Theme" class="form-control" />
+                <span asp-validation-for="Theme" class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Crear" class="btn btn-info" />
+            <input type="reset" value="Limpiar" class="btn btn-info" />
+        </div>
+
+    </form>
+</div>
+
+<br />
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

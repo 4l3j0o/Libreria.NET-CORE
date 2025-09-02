@@ -1,0 +1,23 @@
+﻿@model Library.ViewModels.ApplicationUserViewModel
+@{
+    ViewData["Title"] = "Crear usuario";
+}
+
+<h2>Crear usuario</h2>
+
+<form asp-action="Create" method="post" autocomplete="off">
+    <partial name="_UserForm" />
+    <br />
+    <div class="col-md-4">
+        <label asp-for="Password" class="control-label">Contraseña</label>
+        <input asp-for="Password" class="form-control" autocomplete="new-password" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <br />
+    <button class="btn btn-success">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

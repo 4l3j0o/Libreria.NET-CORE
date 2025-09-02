@@ -1,0 +1,107 @@
+﻿@using Library.ViewModels
+@model IEnumerable<ItemCategoryCountViewModel>
+
+@{
+    ViewData["Title"] = "Conteo de ítems de la biblioteca por categoría";
+}
+
+@{
+    string chartJson = ViewBag.ChartJson as string ?? "[]";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table id="rawTable" class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Tipo de ítem</th>
+            <th>Categoría</th>
+            <th class="text-end">Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model)
+        {
+            <tr>
+                <td>@row.ItemType</td>
+                <td>@row.Category</td>
+                <td class="text-end">@row.Count</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row mt-4">
+    <div class="col-md-6 text-center">
+        <canvas id="itemChart" width="300" height="300"></canvas>
+        <p class="fw-semibold mt-2">Gráfico circular</p>
+    </div>
+    <div class="col-md-6 text-center">
+        <canvas id="barChart" width="300" height="300"></canvas>
+        <p class="fw-semibold mt-2">Gráfico de barras</p>
+    </div>
+</div>
+
+@section Scripts
+{
+    <!-- Chart.js CDN -->
+    <script src="~/lib/chartjs/chart.umd.min.js"></script>
+
+    <script>
+        const chartData = JSON.parse('@Html.Raw(chartJson)');
+
+        const labels = chartData.map(x => x.label);
+        const counts = chartData.map(x => x.value);
+
+        // Pie Chart
+        const pieCtx = document.getElementById('itemChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: counts,
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#8BC34A', '#FF9800', '#9C27B0', '#03A9F4'
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${ctx.label}: ${ctx.parsed}`
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Cantidad de ítems',
+                    data: counts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}

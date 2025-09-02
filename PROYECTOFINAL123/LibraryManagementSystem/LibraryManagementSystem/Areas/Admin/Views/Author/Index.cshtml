@@ -1,0 +1,107 @@
+﻿@using Library.Utilities
+@model Library.ViewModels.AuthorViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Autores de los catálogos</h1>
+
+<br />
+
+<form asp-action="Index" method="get">
+    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" style="width: 400px"
+        placeholder="Buscar por nombre del autor" />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a asp-action="Index" class="btn btn-primary">Limpiar</a>
+</form>
+<br />
+
+<div class="row">
+    <div class="col-md-7">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+
+                    <th>
+                        País
+                    </th>
+
+                    <th>
+                        Biografía
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PagedAuthors?.Data)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country.Name)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Biography)
+                        </td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-dark">Editar</a> |
+                            <button class="btn btn-sm btn-danger"
+                                onclick="openDeleteModal(@item.Id, '@item.Name', '@ViewContext.RouteData.Values["controller"]')">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-5">
+        <form asp-action="CreateorUpdate" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CountryId" class="control-label"></label>
+                <select asp-for="CountryId" asp-items="Model.Countries" class="form-control">
+                    <option value="">-- Selecciona país --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Biography" class="control-label"></label>
+                <textarea asp-for="Biography" class="form-control"></textarea>
+                <span asp-validation-for="Biography" class="text-danger"></span>
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<cs-pager cs-paging-pagesize=(int)Model.PagedAuthors.PageSize cs-paging-pagenumber=(int)Model.PagedAuthors.PageNumber
+    cs-paging-totalitems=(int)Model.PagedAuthors.TotalItems cs-pagenumber-param="pageNumber" asp-controller="Author"
+    asp-action="Index" cs-pager-li-current-class="page-item active" cs-pager-li-other-class="page-item"
+    cs-pager-li-non-active-class="page-item disabled" cs-pager-link-current-class="page-link"
+    cs-pager-link-other-class="page-link">
+</cs-pager>

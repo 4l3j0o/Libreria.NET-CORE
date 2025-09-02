@@ -1,0 +1,81 @@
+﻿@using Library.Utilities
+@model Library.ViewModels.CategoryViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Categorías de los catálogos de la biblioteca</h1>
+
+<div class="row">
+    <div class="col-md-7">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Tipo de ítem
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PagedCategories?.Data)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ItemType)
+                        </td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-dark">Editar</a> |
+                            <button class="btn btn-danger"
+                                onclick="openDeleteModal(@item.Id, '@item.Name', '@ViewContext.RouteData.Values["controller"]')">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-5">
+        <form asp-action="CreateorUpdate" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ItemType"></label>
+                <select asp-for="ItemType" asp-items="Model.ItemTypeList" class="form-control">-- Selecciona tipo de
+                    ítem --</select>
+                <span asp-validation-for="ItemType" class="text-danger"></span>
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<cs-pager cs-paging-pagesize=(int)Model.PagedCategories.PageSize
+    cs-paging-pagenumber=(int)Model.PagedCategories.PageNumber
+    cs-paging-totalitems=(int)Model.PagedCategories.TotalItems cs-pagenumber-param="pageNumber"
+    asp-controller="Category" asp-action="Index" cs-pager-li-current-class="page-item active"
+    cs-pager-li-other-class="page-item" cs-pager-li-non-active-class="page-item disabled"
+    cs-pager-link-current-class="page-link" cs-pager-link-other-class="page-link">
+</cs-pager>

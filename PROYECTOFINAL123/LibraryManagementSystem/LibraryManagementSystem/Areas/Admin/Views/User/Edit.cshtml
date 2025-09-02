@@ -1,0 +1,19 @@
+﻿@using LibraryManagementSystem
+
+@model Library.ViewModels.ApplicationUserViewModel
+@{
+    ViewData["Title"] = "Editar usuario";
+}
+<h2>Editar usuario</h2>
+
+<form asp-action="Edit" method="post">
+    <input asp-for="Id" type="hidden" />
+    <partial name="_UserForm" />
+    <br />
+    <button class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

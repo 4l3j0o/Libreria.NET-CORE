@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\LibraryManagementSystem",
+    "\\LibraryManagementSystem\\LibraryManagementSystem",
+    "\\LibraryManagementSystem\\LibraryManagementSystem\\Areas",
+    "\\LibraryManagementSystem\\LibraryManagementSystem\\Areas\\Identity",
+    "\\LibraryManagementSystem\\LibraryManagementSystem\\Areas\\Identity\\Pages",
+    "\\LibraryManagementSystem\\LibraryManagementSystem\\Areas\\Identity\\Pages\\Account"
+  ],
+  "SelectedNode": "\\LibraryManagementSystem\\LibraryManagementSystem\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
+  "PreviewInSolutionExplorer": false
+}

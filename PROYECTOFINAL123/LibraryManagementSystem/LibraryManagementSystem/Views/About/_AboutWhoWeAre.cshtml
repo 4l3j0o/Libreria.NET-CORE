@@ -1,0 +1,122 @@
+﻿<h2 class="mb-3">Quiénes Somos</h2>
+
+<p>
+    La Biblioteca Central de la Universidad Privada Domingo Savio (UPDS) Sede Tarija es el principal centro de
+    conocimiento de la región, sirviendo con orgullo a la comunidad académica y a los profesionales del departamento de
+    Tarija desde la fundación de la universidad. Nuestro compromiso con la excelencia académica y la innovación
+    educativa se refleja en la calidad de nuestras colecciones y en el profesionalismo de nuestro personal.
+</p>
+
+<p>
+    Hoy en día gestionamos más de <strong>15 000 materiales físicos</strong> y miles de recursos digitales
+    —incluyendo libros, periódicos, revistas y una vasta colección de artículos científicos—, y hemos adoptado la
+    bibliotecología moderna mediante un sistema digital LMS totalmente equipado, el cual facilita el acceso a la
+    información y el aprendizaje continuo.
+</p>
+
+<p>
+    Un equipo de bibliotecarios titulados, especialistas en TI y personal de apoyo trabaja en conjunto para mantener las
+    puertas y el Wi-Fi abiertos, fomentando un espacio inclusivo y acogedor para estudiantes, docentes e investigadores
+    de todas las áreas.
+</p>
+
+<h3 class="fw-semibold mt-5 mb-3">Divisiones de la Biblioteca</h3>
+
+<div class="accordion" id="divisionAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingLending">
+            <button class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseLending" aria-expanded="false" aria-controls="collapseLending">
+                <i class="bi bi-plus-lg me-2"></i> División de Préstamos
+            </button>
+        </h2>
+        <div id="collapseLending" class="accordion-collapse collapse" aria-labelledby="headingLending"
+             data-bs-parent="#divisionAccordion">
+            <div class="accordion-body">
+                <p>
+                    Los usuarios pueden solicitar y gestionar sus cuentas de préstamo de libros. Equipada con sistemas
+                    digitales, esta división garantiza operaciones de préstamo eficientes y fáciles de usar, incluyendo
+                    la gestión de renovaciones y devoluciones.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingResearch">
+            <button class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseResearch" aria-expanded="false" aria-controls="collapseResearch">
+                <i class="bi bi-plus-lg me-2"></i> División de Investigación
+            </button>
+        </h2>
+        <div id="collapseResearch" class="accordion-collapse collapse" aria-labelledby="headingResearch"
+             data-bs-parent="#divisionAccordion">
+            <div class="accordion-body">
+                <p>
+                    Nuestra División de Investigación está diseñada para estudiantes, académicos y profesionales que
+                    requieren acceso a recursos especializados, publicaciones académicas y bases de datos. Con espacios
+                    tranquilos para el estudio y personal capacitado, es el lugar ideal para el trabajo académico y la
+                    investigación.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingNews">
+            <button class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseNews" aria-expanded="false" aria-controls="collapseNews">
+                <i class="bi bi-plus-lg me-2"></i> División de Hemeroteca
+            </button>
+        </h2>
+        <div id="collapseNews" class="accordion-collapse collapse" aria-labelledby="headingNews"
+             data-bs-parent="#divisionAccordion">
+            <div class="accordion-body">
+                <p>
+                    La División de Hemeroteca ofrece acceso a diarios, revistas y publicaciones periódicas relevantes
+                    para las diversas carreras de la universidad. Los visitantes pueden mantenerse informados en un
+                    salón de lectura tranquilo que ofrece tanto ediciones actuales como archivadas.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingIT">
+            <button class="accordion-button collapsed d-flex align-items-center" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseIT" aria-expanded="false" aria-controls="collapseIT">
+                <i class="bi bi-plus-lg me-2"></i> División de Informática
+            </button>
+        </h2>
+        <div id="collapseIT" class="accordion-collapse collapse" aria-labelledby="headingIT"
+             data-bs-parent="#divisionAccordion">
+            <div class="accordion-body">
+                <p>
+                    La División de Informática apoya la infraestructura digital de la biblioteca, incluyendo el sistema
+                    de gestión bibliotecaria, computadoras de acceso público, servicios de Wi-Fi y acceso a bases de
+                    datos en línea. También se encarga de realizar talleres de alfabetización digital y de apoyar el uso
+                    de la tecnología para fines educativos.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const accordion = document.getElementById("divisionAccordion");
+
+            accordion.addEventListener("show.bs.collapse", (e) => {
+                const icon = e.target
+                    .previousElementSibling
+                    .querySelector("i");
+                icon.classList.replace("bi-plus-lg", "bi-dash-lg");
+            });
+
+            accordion.addEventListener("hide.bs.collapse", (e) => {
+                const icon = e.target
+                    .previousElementSibling
+                    .querySelector("i");
+                icon.classList.replace("bi-dash-lg", "bi-plus-lg");
+            });
+        });
+    </script>
+}

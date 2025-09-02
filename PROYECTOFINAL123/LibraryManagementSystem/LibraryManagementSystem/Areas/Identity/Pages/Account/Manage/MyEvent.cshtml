@@ -1,0 +1,63 @@
+﻿@page
+@model MyEventModel
+@{
+    ViewData["Title"] = "Eventos";
+    ViewData["ActivePage"] = ManageNavPages.MyEvent;
+}
+
+<h2 class="mb-4">Mis eventos registrados</h2>
+
+@if (!Model.RegisteredEvents.Any())
+{
+    <div class="alert alert-info">No te has registrado en ningún evento.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="table-light">
+                <tr>
+                    <th>Nombre del evento</th>
+                    <th>Fecha</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var e in Model.RegisteredEvents)
+                {
+                    var isPast = e.StartDate < DateTime.Today;
+
+                    <tr>
+                        <td>@e.EventTitle</td>
+                        <td>@e.StartDate.ToShortDateString()</td>
+                        <td>@e.Location</td>
+
+                        <td>
+                            @if (isPast)
+                            {
+                                <span class="badge bg-secondary">Completado</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-success">Próximo</span>
+                            }
+                        </td>
+                        <td>
+                            @if (!isPast)
+                            {
+                                <form method="post" asp-page-handler="CancelRegistration">
+                                    <input type="hidden" name="eventregistrationId" value="@e.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Cancelar
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

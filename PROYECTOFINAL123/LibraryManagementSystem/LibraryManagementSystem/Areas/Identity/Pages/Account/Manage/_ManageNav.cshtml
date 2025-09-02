@@ -1,0 +1,40 @@
+﻿@using Library.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    var user = await UserManager.GetUserAsync(User);
+    var roles = await UserManager.GetRolesAsync(user);
+    var isMember = roles.Contains("Member");
+}
+
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Perfil</a>
+    </li>
+
+    @* Show only for Members *@
+    @if (isMember)
+    {
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.MyItemNavClass(ViewContext)" id="myitem" asp-page="./MyItem">Préstamos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.MyEventNavClass(ViewContext)" id="myevent" asp-page="./MyEvent">Eventos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @ManageNavPages.MyPaymentNavClass(ViewContext)" id="mypayment"
+                asp-page="./MyPayment">Pagos</a>
+        </li>
+    }
+
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Correo
+            electrónico</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password"
+            asp-page="./ChangePassword">Contraseña</a>
+    </li>
+</ul>

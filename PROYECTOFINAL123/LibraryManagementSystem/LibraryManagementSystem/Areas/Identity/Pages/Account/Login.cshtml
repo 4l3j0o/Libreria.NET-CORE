@@ -1,0 +1,44 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow" style="width: 400px;">
+        <h1 class="text-center mb-4">@ViewData["Title"]</h1>
+        <section>
+            <form id="account" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true"
+                        placeholder="Correo electrónico" />
+                    <label asp-for="Input.Username" class="form-label">Usuario</label>
+                    <span asp-validation-for="Input.Username" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password"
+                        aria-required="true" placeholder="Contraseña" />
+                    <label asp-for="Input.Password" class="form-label">Contraseña</label>
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" asp-for="Input.RememberMe" />
+                    <label asp-for="Input.RememberMe" class="form-check-label">
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                    </label>
+                </div>
+                <div>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Iniciar sesión</button>
+                </div>
+
+            </form>
+        </section>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,113 @@
+﻿@using Library.Utilities
+@model Library.ViewModels.PublisherViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Editores de los catálogos de la biblioteca</h1>
+<br />
+
+<form asp-action="Index" method="get">
+    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" style="width: 400px"
+        placeholder="Buscar por nombre del editor" />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a asp-action="Index" class="btn btn-primary">Limpiar</a>
+</form>
+<br />
+
+<div class="row">
+    <div class="col-md-9">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Dirección
+                    </th>
+                    <th>
+                        Teléfono
+                    </th>
+                    <th>
+                        Teléfono fijo
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PagedPublishers?.Data)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Landline)
+                        </td>
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-dark">Editar</a> |
+                            <button class="btn btn-sm btn-danger"
+                                onclick="openDeleteModal(@item.Id, '@item.Name', '@ViewContext.RouteData.Values["controller"]')">Eliminar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3">
+        <form asp-action="CreateorUpdate" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Landline"></label>
+                <input asp-for="Landline" class="form-control" />
+                <span asp-validation-for="Landline" class="text-danger"></span>
+            </div>
+
+            <br />
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<cs-pager cs-paging-pagesize=(int)Model.PagedPublishers.PageSize
+    cs-paging-pagenumber=(int)Model.PagedPublishers.PageNumber
+    cs-paging-totalitems=(int)Model.PagedPublishers.TotalItems cs-pagenumber-param="pageNumber"
+    asp-controller="Publisher" asp-action="Index" cs-pager-li-current-class="page-item active"
+    cs-pager-li-other-class="page-item" cs-pager-li-non-active-class="page-item disabled"
+    cs-pager-link-current-class="page-link" cs-pager-link-other-class="page-link">
+</cs-pager>

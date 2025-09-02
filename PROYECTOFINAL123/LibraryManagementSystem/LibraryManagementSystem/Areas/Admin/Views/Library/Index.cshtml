@@ -1,0 +1,74 @@
+﻿@using Library.Utilities
+@model PagedResult<Library.ViewModels.LibraryInfoViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card shadow p-4 mb-4 bg-white rounded">
+    <h4 class="mb-3">Información de la biblioteca</h4>
+    @foreach (var item in Model.Data)
+    {
+
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Código registrado</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.RegisteredCode</p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Nombre</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.Name</p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Dirección</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.Address</p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Teléfono</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.PhoneNumber</p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Correo electrónico</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.Email</p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Horario de apertura</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.OpeningHours</p>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Días de apertura</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.OpeningDays</p>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 fw-semibold">Descripción</label>
+            <div class="col-sm-9">
+                <p class="form-control-plaintext">@item.Description</p>
+            </div>
+        </div>
+
+        <div class="text-end">
+            @Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+        </div>
+    }
+</div>
+
+<cs-pager cs-paging-pagesize=(int)Model.PageSize cs-paging-pagenumber=(int)Model.PageNumber
+    cs-paging-totalitems=(int)Model.TotalItems cs-pagenumber-param="pageNumber" asp-controller="Library"
+    asp-action="Index" cs-pager-li-current-class="page-item active" cs-pager-li-other-class="page-item"
+    cs-pager-li-non-active-class="page-item disabled" cs-pager-link-current-class="page-link"
+    cs-pager-link-other-class="page-link">
+</cs-pager>

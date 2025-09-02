@@ -1,0 +1,233 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<style>
+    .custom-carousel img {
+        width: 100%;
+        max-height: 500px;
+        object-fit: contain;
+    }
+
+    .carousel-caption-below {
+        position: static;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.05);
+        padding: 10px;
+    }
+
+    .carousel-item {
+        position: relative;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 5%;
+        z-index: 10;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: rgba(0, 0, 0, 0.5);
+        background-size: 100% 100%;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+
+    .custom-btn i {
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 12px;
+        border-radius: 50%;
+        transition: background 0.3s;
+    }
+
+    .custom-btn i:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+</style> @* Styling for Caraousal *@
+
+<style>
+    .modal-backdrop.show {
+        backdrop-filter: blur(3px);
+    }
+
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.25);
+        background-color: #fff;
+    }
+
+    .modal-header {
+        background-color: aqua;
+        color: black;
+        border-bottom: none;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .modal-title {
+        font-weight: bold;
+    }
+
+    .modal-body {
+        font-size: 1rem;
+        padding: 1.5rem;
+        color: #333;
+        text-align: center;
+    }
+
+    .modal-footer {
+        justify-content: center;
+        padding-bottom: 1.2rem;
+    }
+
+    .modal-footer .btn {
+        width: 100px;
+        font-weight: 600;
+        border-radius: 8px;
+    }
+
+    .modal.fade .modal-dialog {
+        transform: translateY(-20%);
+        transition: transform 0.3s ease-out;
+    }
+
+    .modal.show .modal-dialog {
+        transform: translateY(0);
+    }
+</style> @* Styling for Popup box *@
+
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido a la Biblioteca</h1>
+    <h2>Universidad Privada Domingo Savio Sede Tarija</h2>
+</div>
+<br />
+
+@if (ViewBag.LatestEventImages != null && ViewBag.LatestEventImages.Count > 0)
+{
+    <div id="eventCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner custom-carousel">
+            @for (int i = 0; i < ViewBag.LatestEventImages.Count; i++)
+            {
+                var eventItem = ViewBag.LatestEventImages[i];
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <img src="@eventItem.ImageUrl" alt="Event Image">
+
+                    <div class="carousel-caption-below">
+                        <a href="#" class="event-title" data-event-id="@eventItem.Id">@eventItem.Title</a>
+                        <p>@eventItem.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#eventCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#eventCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+}
+
+<div class="container py-4">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title">Sobre Nosotros</h3>
+                    <p class="card-text">
+                        Estamos dedicados a proporcionar una amplia gama de recursos académicos y de investigación a
+                        nuestra comunidad estudiantil, docente y administrativa. Nuestra biblioteca ofrece un ambiente
+                        ideal para el estudio, la investigación y el aprendizaje.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title">Regístrate</h3>
+                    <p class="card-text">
+                        Regístrate en nuestro sistema para acceder a una amplia colección de libros, bases de datos
+                        digitales y otros recursos. La membresía es exclusiva para la comunidad de la UPDS Sede Tarija.
+                    </p>
+                    <a asp-controller="Membership" asp-action="Details" class="btn btn-primary mt-auto">
+                        Más información.
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <h3 class="card-title">Contáctanos</h3>
+                    <p class="card-text">
+                        Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos por correo electrónico,
+                        teléfono o visitando nuestra oficina.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const msg = '@TempData["SuccessMessage"]';
+            if (msg) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: msg,
+                    confirmButtonText: 'Aceptar'
+                });
+            }
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const links = document.querySelectorAll(".event-title");
+
+            links.forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault();
+
+                    const eventId = this.getAttribute("data-event-id");
+                    const isAuthenticated = @User.Identity.IsAuthenticated.ToString().ToLower();
+
+                    if (!isAuthenticated) {
+                        const guestModal = new bootstrap.Modal(document.getElementById('guestModal'));
+                        guestModal.show();
+                    } else {
+                        window.location.href = `/member/Event/Details/${eventId}`;
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<div class="modal fade" id="guestModal" tabindex="-1" aria-labelledby="guestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="guestModalLabel">Aviso</h5>
+            </div>
+            <div class="modal-body">
+                Por favor, inicia sesión para ver los detalles del evento.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>

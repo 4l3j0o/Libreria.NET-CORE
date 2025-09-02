@@ -1,0 +1,112 @@
+﻿@using Library.Models
+@using Library.Utilities
+@model PagedResult<Library.ViewModels.LibraryEventViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Eventos de la biblioteca</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="EventParticipation" asp-controller="EventParticipant" asp-area="Admin"
+        class="btn btn-outline-primary">
+        Ver todas las inscripciones a eventos
+    </a>
+</div>
+
+<form asp-action="Index" method="get">
+    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" style="width: 400px"
+        placeholder="Buscar por nombre de evento" />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a asp-action="Index" class="btn btn-primary">Limpiar</a>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-secondary">Crear nuevo evento</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+
+            <th>
+                Código de evento
+            </th>
+            <th>
+                Título
+            </th>
+            <th>
+                Descripción
+            </th>
+            <th>
+                Fecha de inicio
+            </th>
+            <th>
+                Fecha de fin
+            </th>
+            <th>
+                Ubicación
+            </th>
+            <th>
+                Estado del evento
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    <span class="bg-@(item.EventStatus == EventStatus.Ongoing ? "secondary" : "warning")">
+                        @item.EventStatus
+                    </span>
+                </td>
+
+                <td>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-dark">Editar</a> |
+                        @* <button class="btn btn-sm btn-danger" onclick="openDeleteModal(@item.Id, '@item.Title', '@ViewContext.RouteData.Values["controller"]')">Delete</button> *@
+
+                        <form asp-action="ToggleStatus" asp-route-id="@item.Id" method="post" class="d-inline">
+                            <button type="submit"
+                                class="btn btn-sm @(item.EventStatus == EventStatus.Ongoing ? "btn-secondary" : "btn-warning")"
+                                title="Alternar en curso / Cancelar">
+                                Cancelar
+                            </button>
+                        </form>
+
+
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<cs-pager cs-paging-pagesize=(int)Model.PageSize cs-paging-pagenumber=(int)Model.PageNumber
+    cs-paging-totalitems=(int)Model.TotalItems cs-pagenumber-param="pageNumber" asp-controller="Event"
+    asp-action="Index" cs-pager-li-current-class="page-item active" cs-pager-li-other-class="page-item"
+    cs-pager-li-non-active-class="page-item disabled" cs-pager-link-current-class="page-link"
+    cs-pager-link-other-class="page-link">
+</cs-pager>

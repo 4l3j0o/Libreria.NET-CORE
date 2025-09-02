@@ -1,0 +1,85 @@
+﻿@model Library.ViewModels.LibraryEventViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Editar detalles del evento</h1>
+
+<hr />
+<div class="container mt-3">
+    <form asp-action="Edit" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+
+            <div class="col-md-6 form-group">
+                <label asp-for="EventCode" class="control-label"></label>
+                <input asp-for="EventCode" class="form-control" readonly />
+                <span asp-validation-for="EventCode" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="StartDate" class="control-label">Fecha de inicio<span class="text-danger"> *</label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Title" class="control-label required">Título<span class="text-danger"> *</span></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="EndDate" class="control-label">Fecha de fin</label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Description" class="control-label">Descripción<span class="text-danger"> *</label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label asp-for="Location" class="control-label">Ubicación<span class="text-danger"> *</label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 form-group">
+                <label>Reemplazar imagen del evento</label>
+                <input type="file" name="ImageFile" class="form-control" />
+
+                @if (Model.ImageUrl != null)
+                {
+                    <div class="form-group">
+                        <label>Imagen actual</label><br />
+                        <img src="@Model.ImageUrl" alt="Imagen del evento" style="max-height: 120px;" />
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-info" />
+
+        </div>
+    </form>
+</div>
+
+<br />
+<div>
+    <a asp-action="Index">Volver a la lista</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

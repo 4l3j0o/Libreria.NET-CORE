@@ -1,0 +1,79 @@
+﻿@{
+    ViewData["Title"] = "About";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="container py-5">
+    <h2 class="mb-4 text-center">Biblioteca Pública De La Universidad Privada Domingo Savio</h2>
+
+    <div class="row">
+
+        <!-- Content Display -->
+        <div class="col-md-9">
+            <div id="contentArea" class="p-4 bg-light rounded shadow-sm">
+                @await Html.PartialAsync("_AboutWhoWeAre")
+            </div>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3 mb-4">
+            <div class="list-group shadow-sm" id="aboutNav">
+                <button class="btn btn-secondary w-100 my-1">
+                    <a href="@Url.Action("WhoWeAre")" class="list-group-item list-group-item-action active"
+                        data-partial="true">
+                        📘 Quiénes Somos
+                    </a>
+                </button>
+                <button class="btn btn-secondary w-100 my-1">
+                    <a href="@Url.Action("Background")" class="list-group-item list-group-item-action"
+                        data-partial="true">
+                        🕰️ Historia
+                    </a>
+                </button>
+                <button class="btn btn-secondary w-100 my-1">
+                    <a href="@Url.Action("VisionMission")" class="list-group-item list-group-item-action"
+                        data-partial="true">
+                        🎯 Visión y Misión
+                    </a>
+                </button>
+                <button class="btn btn-secondary w-100 my-1">
+                    <a href="@Url.Action("AimsObjectives")" class="list-group-item list-group-item-action"
+                        data-partial="true">
+                        🎓 Objetivos y Metas
+                    </a>
+                </button>
+                <button class="btn btn-secondary w-100 my-1">
+                    <a href="@Url.Action("OurServices")" class="list-group-item list-group-item-action"
+                        data-partial="true">
+                        🛠️ Nuestros Servicios
+                    </a>
+                </button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navLinks = document.querySelectorAll("#aboutNav a[data-partial='true']");
+            const contentArea = document.getElementById("contentArea");
+
+            navLinks.forEach(link => {
+                link.addEventListener("click", async function (event) {
+                    event.preventDefault();
+
+                    navLinks.forEach(l => l.classList.remove("active"));
+                    this.classList.add("active");
+
+                    const response = await fetch(this.href);
+                    const html = await response.text();
+                    contentArea.innerHTML = html;
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,69 @@
+﻿@using Library.Models
+@using Library.Utilities
+@model PagedResult<Library.ViewModels.ApplicationUserViewModel>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h4 class="mb-3">Usuarios del sistema (@Model.TotalItems)</h4>
+
+<form asp-action="Index" method="get">
+    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" style="width: 400px"
+        placeholder="Buscar por nombre de usuario" />
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a asp-action="Index" class="btn btn-primary">Limpiar</a>
+</form>
+
+<p><a asp-action="Create" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>Crear nuevo usuario
+    </a>
+</p>
+
+<table class="table table-hover table-sm align-middle">
+    <thead class="table-light">
+        <tr>
+            <th>Código de usuario</th>
+            <th>Nombre completo</th>
+            <th>Correo electrónico</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th style="width:140px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in Model.Data)
+        {
+            <tr>
+                <td>@u.UserCode</td>
+                <td>@u.FullName</td>
+                <td>@u.Email</td>
+                <td>@u.UserRole</td>
+                <td>
+                    <span class="badge bg-@(u.UserStatus == UserStatus.Active ? "success" : "secondary")">
+                        @u.UserStatus
+                    </span>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@u.Id" class="btn btn-sm btn-dark">
+                        Editar
+                    </a>
+
+
+                    <form asp-action="ToggleStatus" asp-route-id="@u.Id" method="post" class="d-inline">
+                        <button type="submit"
+                            class="btn btn-sm @(u.UserStatus == UserStatus.Active ? "btn-warning" : "btn-success")"
+                            title="Activar / Desactivar">
+                            <i class="bi @(u.UserStatus == UserStatus.Active ? "bi-slash-circle" : "bi-check-circle")"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<cs-pager cs-paging-pagesize=(int)Model.PageSize cs-paging-pagenumber=(int)Model.PageNumber
+    cs-paging-totalitems=(int)Model.TotalItems cs-pagenumber-param="pageNumber" asp-controller="User" asp-action="Index"
+    cs-pager-li-current-class="page-item active" cs-pager-li-other-class="page-item"
+    cs-pager-li-non-active-class="page-item disabled" cs-pager-link-current-class="page-link"
+    cs-pager-link-other-class="page-link">
+</cs-pager>
